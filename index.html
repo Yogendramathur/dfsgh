@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Girl & Boy Ludo Game</title>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #ff9a9e, #fad0c4, #a1c4fd);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.game {
+    width: 100%;
+    max-width: 850px;
+    text-align: center;
+    padding: 20px;
+}
+
+h1 {
+    margin: 5px 0;
+    color: #7c2d12;
+    font-size: 38px;
+}
+
+.subtitle {
+    font-size: 18px;
+    margin-bottom: 15px;
+    color: #333;
+}
+
+.players {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+.player {
+    flex: 1;
+    background: rgba(255,255,255,.85);
+    padding: 12px;
+    border-radius: 15px;
+    font-size: 18px;
+    font-weight: bold;
+    box-shadow: 0 4px 12px rgba(0,0,0,.15);
+}
+
+.girl {
+    border: 4px solid #ec4899;
+}
+
+.boy {
+    border: 4px solid #3b82f6;
+}
+
+#turn {
+    background: #fff;
+    padding: 10px 20px;
+    border-radius: 20px;
+    display: inline-block;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+.board {
+    width: min(90vw, 600px);
+    height: min(90vw, 600px);
+    margin: auto;
+    display: grid;
+    grid-template-columns: repeat(15, 1fr);
+    grid-template-rows: repeat(15, 1fr);
+    border: 8px solid #222;
+    background: white;
+    box-shadow: 0 10px 30px rgba(0,0,0,.3);
+}
+
+/* Home areas */
+.home {
+    grid-column: span 6;
+    grid-row: span 6;
+    display: grid;
+    place-items: center;
+    padding: 15px;
+}
+
+.pink-home {
+    background: #f9a8d4;
+}
+
+.blue-home {
+    background: #93c5fd;
+}
+
+.green-home {
+    background: #86efac;
+}
+
+.yellow-home {
+    background: #fde68a;
+}
+
+.home-inner {
+    width: 80%;
+    height: 80%;
+    background: white;
+    border-radius: 20px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    gap: 10px;
+    padding: 15px;
+}
+
+.token-home {
+    border-radius: 50%;
+    border: 4px solid rgba(0,0,0,.2);
+}
+
+/* Board path */
+.cell {
+    border: 1px solid #aaa;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #fff;
+    font-size: 18px;
+}
+
+.path {
+    background: #f8fafc;
+}
+
+.pink {
+    background: #fbcfe8;
+}
+
+.blue {
+    background: #bfdbfe;
+}
+
+.green {
+    background: #bbf7d0;
+}
+
+.yellow {
+    background: #fef3c7;
+}
+
+.center {
+    background: conic-gradient(
+        #ec4899 0 25%,
+        #3b82f6 25% 50%,
+        #22c55e 50% 75%,
+        #facc15 75% 100%
+    );
+}
+
+/* Tokens */
+.token {
+    width: 70%;
+    height: 70%;
+    border-radius: 50%;
+    border: 3px solid white;
+    box-shadow: 0 2px 5px rgba(0,0,0,.4);
+    cursor: pointer;
+    transition: .2s;
+}
+
+.token:hover {
+    transform: scale(1.15);
+}
+
+.pink-token {
+    background: #ec4899;
+}
+
+.blue-token {
+    background: #3b82f6;
+}
+
+.dice-area {
+    margin-top: 20px;
+}
+
+#dice {
+    width: 75px;
+    height: 75px;
+    background: white;
+    border-radius: 15px;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 45px;
+    box-shadow: 0 5px 15px rgba(0,0,0,.25);
+    margin: 10px;
+}
+
+button {
+    background: #7c3aed;
+    color: white;
+    border: none;
+    border-radius: 12px;
+    padding: 13px 25px;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #6d28d9;
+    transform: scale(1.03);
+}
+
+#message {
+    margin-top: 10px;
+    font-weight: bold;
+    color: #333;
+    min-height: 25px;
+}
+
+@media(max-width:600px) {
+    h1 {
+        font-size: 28px;
+    }
+
+    .board {
+        border-width: 4px;
+    }
+
+    .players {
+        font-size: 14px;
+    }
+
+    #dice {
+        width: 60px;
+        height: 60px;
+        font-size: 35px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="game">
+
+    <h1>🎲 Girl & Boy Ludo 🎲</h1>
+    <div class="subtitle">
+        👧 Emma vs 👦 Alex
+    </div>
+
+    <div class="players">
+        <div class="player girl">
+            👧 Emma<br>
+            <span>Pink</span>
+        </div>
+
+        <div class="player boy">
+            👦 Alex<br>
+            <span>Blue</span>
+        </div>
+    </div>
+
+    <div id="turn">Emma's Turn 👧</div>
+
+    <div class="board">
+
+        <!-- TOP -->
+        <div class="home pink-home">
+            <div class="home-inner">
+                <div class="token-home pink-token"></div>
+                <div class="token-home pink-token"></div>
+                <div class="token-home pink-token"></div>
+                <div class="token-home pink-token"></div>
+            </div>
+        </div>
+
+        <!-- top middle -->
+        <div class="cell path"></div>
+        <div class="cell path"></div>
+        <div class="cell blue"></div>
+
+        <!-- BLUE HOME -->
+        <div class="home blue-home">
+            <div class="home-inner">
+                <div class="token-home" style="background:#3b82f6"></div>
+                <div class="token-home" style="background:#3b82f6"></div>
+                <div class="token-home" style="background:#3b82f6"></div>
+                <div class="token-home" style="background:#3b82f6"></div>
+            </div>
+        </div>
+
+        <!-- CENTER ROWS -->
+        <div class="cell path"></div>
+        <div class="cell pink"></div>
+        <div class="cell path">⭐</div>
+        <div class="cell path"></div>
+        <div class="cell path"></div>
+        <div class="cell path"></div>
+        <div class="cell path"></div>
+        <div class="cell path"></div>
+        <div class="cell path"></div>
+
+        <div class="cell path"></div>
+        <div class="cell pink"></div>
+        <div class="cell path"></div>
+        <div class="cell center">🏆</div>
+        <div class="cell path"></div>
+        <div class="cell blue"></div>
+
+        <div class="cell path"></div>
+        <div class="cell pink"></div>
+        <div class="cell path"></div>
+
+        <!-- BOTTOM HOMES -->
+        <div class="home green-home">
+            <div class="home-inner">
+                <div class="token-home" style="background:#22c55e"></div>
+                <div class="token-home" style="background:#22c55e"></div>
+                <div class="token-home" style="background:#22c55e"></div>
+                <div class="token-home" style="background:#22c55e"></div>
+            </div>
+        </div>
+
+        <div class="cell path"></div>
+        <div class="cell path"></div>
+        <div class="cell green"></div>
+
+        <div class="home yellow-home">
+            <div class="home-inner">
+                <div class="token-home" style="background:#facc15"></div>
+                <div class="token-home" style="background:#facc15"></div>
+                <div class="token-home" style="background:#facc15"></div>
+                <div class="token-home" style="background:#facc15"></div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="dice-area">
+
+        <div id="dice">🎲</div>
+
+        <br>
+
+        <button onclick="rollDice()">
+            Roll Dice 🎲
+        </button>
+
+        <div id="message">
+            Emma, roll the dice!
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+let currentPlayer = "girl";
+let diceValue = 0;
+
+const diceFaces = [
+    "",
+    "⚀",
+    "⚁",
+    "⚂",
+    "⚃",
+    "⚄",
+    "⚅"
+];
+
+function rollDice() {
+
+    diceValue = Math.floor(Math.random() * 6) + 1;
+
+    document.getElementById("dice").textContent =
+        diceFaces[diceValue];
+
+    let playerName =
+        currentPlayer === "girl" ? "Emma 👧" : "Alex 👦";
+
+    document.getElementById("message").textContent =
+        playerName + " rolled " + diceValue + "!";
+
+    setTimeout(() => {
+
+        if (diceValue === 6) {
+
+            document.getElementById("message").textContent =
+                playerName + " got a 6! Roll again 🎉";
+
+        } else {
+
+            switchPlayer();
+
+        }
+
+    }, 800);
+}
+
+function switchPlayer() {
+
+    if (currentPlayer === "girl") {
+
+        currentPlayer = "boy";
+
+        document.getElementById("turn").textContent =
+            "Alex's Turn 👦";
+
+        document.getElementById("message").textContent =
+            "Alex, roll the dice!";
+
+    } else {
+
+        currentPlayer = "girl";
+
+        document.getElementById("turn").textContent =
+            "Emma's Turn 👧";
+
+        document.getElementById("message").textContent =
+            "Emma, roll the dice!";
+    }
+}
+
+</script>
+
+</body>
+</html>
